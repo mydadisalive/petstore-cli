@@ -1,53 +1,46 @@
 import pytest
 from unittest.mock import patch
 from openapi_client.models.pet import Pet
+
+# Import the functions to be tested
 from petstore_cli import list_pets, find_pet, add_pet
 
-@patch('petstore_cli.PetApi')
-def test_list_pets(MockPetApi):
-    # Mock the PetApi instance
-    mock_pet_api = MockPetApi.return_value
+@pytest.fixture(scope='module', autouse=True)
+def setup_and_teardown():
+    """
+    TODO: Implement setup and teardown for pytest
+    - Setup: Initialize resources needed for tests (e.g., mock API client)
+    - Teardown: Clean up resources (e.g., close connections, reset states)
+    """
+    # Setup code goes here
+    yield
+    # Teardown code goes here
 
-    # Setup mock response
-    mock_pet_api.find_pets_by_status.return_value = [
-        Pet(id=1, name="Buddy", status="available", photo_urls=["https://example.com/photo1.jpg"]),
-        Pet(id=2, name="Milo", status="available", photo_urls=["https://example.com/photo2.jpg"])
-    ]
+# Placeholder for pytest-based tests
+@pytest.mark.skip(reason="TODO: Implement test for listing pets")
+def test_list_pets():
+    """
+    TODO: Implement test for the list_pets function
+    - Mock the API response
+    - Verify correct handling of API data
+    """
+    pass
 
-    # Call the function
-    with patch('builtins.print') as mock_print:
-        list_pets(status='available', limit=2)
+@pytest.mark.skip(reason="TODO: Implement test for finding a pet by ID")
+def test_find_pet():
+    """
+    TODO: Implement test for the find_pet function
+    - Mock the API response for getting pet by ID
+    - Check if the function correctly retrieves and displays pet information
+    """
+    pass
 
-    # Assert print statements
-    mock_print.assert_any_call('ID: 1, Name: Buddy, Status: available')
-    mock_print.assert_any_call('ID: 2, Name: Milo, Status: available')
-
-@patch('petstore_cli.PetApi')
-def test_find_pet(MockPetApi):
-    # Mock the PetApi instance
-    mock_pet_api = MockPetApi.return_value
-
-    # Setup mock response
-    mock_pet_api.get_pet_by_id.return_value = Pet(id=1, name="Buddy", status="available", photo_urls=["https://example.com/photo1.jpg"])
-
-    # Call the function
-    with patch('builtins.print') as mock_print:
-        find_pet(pet_id=1)
-
-    # Assert print statement
-    mock_print.assert_called_with('ID: 1, Name: Buddy, Status: available')
-
-@patch('petstore_cli.PetApi')
-def test_add_pet(MockPetApi):
-    # Mock the PetApi instance
-    mock_pet_api = MockPetApi.return_value
-
-    # Setup mock response
-    mock_pet_api.add_pet.return_value = Pet(id=3, name="Buddy", status="available", photo_urls=["https://example.com/photo1.jpg"])
-
-    # Call the function
-    with patch('builtins.print') as mock_print:
-        add_pet(name="Buddy", status="available", photo_urls=["https://example.com/photo1.jpg"])
-
-    # Assert print statement
-    mock_print.assert_called_with('Added pet with ID: 3')
+@pytest.mark.skip(reason="TODO: Implement test for adding a new pet")
+def test_add_pet():
+    """
+    TODO: Implement test for the add_pet function
+    - Mock the API response for adding a pet
+    - Validate that the function sends the correct data
+    - Verify if the added pet's information is logged or displayed as expected
+    """
+    pass

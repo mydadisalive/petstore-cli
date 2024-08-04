@@ -1,0 +1,66 @@
+name: CI/CD for Petstore CLI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  # Build job: Compiles the Python script into an executable
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Lint with flake8
+      run: |
+        pip install flake8
+        flake8 petstore_cli.py tests/
+
+    - name: Run tests
+      run: |
+        pip install pytest
+        pytest tests/
+
+    - name: Build executable with PyInstaller
+      run: |
+        pip install pyinstaller
+        pyinstaller --onefile petstore_cli.py
+
+  # Deploy job: Placeholder for deploying the executable
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Deploy executable
+      if: github.ref == 'refs/heads/main'
+      uses: actions/upload-artifact@v3
+      with:
+        name: petstore-cli
+        path: dist/petstore_cli.exe
+
+# TODO:
+# - Implement deployment logic to move the executable to a hosting service
+# - Add steps to notify stakeholders about the deployment status
+# - Integrate versioning and release management, possibly with GitHub Releases
+# - Enhance testing to include more comprehensive test coverage
+# - Set up environment variables and secrets for secure deployment

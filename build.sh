@@ -1,0 +1,1 @@
+# TODO: run tests and then build executable using pyinstaller. then run pip-audit and pylint
