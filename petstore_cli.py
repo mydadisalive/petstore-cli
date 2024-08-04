@@ -7,6 +7,7 @@ from openapi_client.models.category import Category
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 def list_pets(status, limit=None):
     """
@@ -20,14 +21,14 @@ def list_pets(status, limit=None):
     with ApiClient(config) as api_client:
         api_instance = PetApi(api_client)
         try:
-            logging.info(f"Fetching pets with status '{status}'...")
+            logger.info(f"Fetching pets with status '{status}'...")
             pets = api_instance.find_pets_by_status(status=[status])
             for i, pet in enumerate(pets):
                 if limit and i >= limit:
                     break
                 print(f"ID: {pet.id}, Name: {pet.name}, Status: {pet.status}")
         except Exception as e:
-            logging.error(f"Error retrieving pets: {e}")
+            logger.error(f"Error retrieving pets: {e}")
 
 def find_pet(pet_id):
     """
@@ -40,11 +41,11 @@ def find_pet(pet_id):
     with ApiClient(config) as api_client:
         api_instance = PetApi(api_client)
         try:
-            logging.info(f"Fetching pet with ID '{pet_id}'...")
+            logger.info(f"Fetching pet with ID '{pet_id}'...")
             pet = api_instance.get_pet_by_id(pet_id)
             print(f"ID: {pet.id}, Name: {pet.name}, Status: {pet.status}")
         except Exception as e:
-            logging.error(f"Pet not found: {e}")
+            logger.error(f"Pet not found: {e}")
 
 def add_pet(name, status, photo_urls=None):
     """
@@ -58,27 +59,27 @@ def add_pet(name, status, photo_urls=None):
         photo_urls = ["https://example.com/photo.jpg"]  # Default photo URL
     config = Configuration()
     config.api_key['api_key'] = 'special-key'  # Set the API key
-    config.debug = True  # Enable debugging to see the request details
+    config.debug = False  # Disable debugging to reduce the amount of logging
     with ApiClient(config) as api_client:
         api_instance = PetApi(api_client)
         new_pet = Pet(name=name, status=status, photo_urls=photo_urls, category=Category(id=1, name="Default"))
         try:
-            logging.info(f"Adding a new pet: {new_pet}")
+            logger.info(f"Adding a new pet: {new_pet}")
             created_pet = api_instance.add_pet(new_pet)
             if created_pet:
                 print(f"Added pet with ID: {created_pet.id}")
             else:
-                logging.warning("The pet was added, but the response is empty.")
-            logging.debug(f"API Response Object: {created_pet}")
+                logger.warning("The pet was added, but the response is empty.")
+            logger.debug(f"API Response Object: {created_pet}")
         except Exception as e:
-            logging.error(f"Failed to add pet: {e}")
+            logger.error(f"Failed to add pet: {e}")
             # Print debug information
-            logging.debug(f"Pet object: {new_pet}")
+            logger.debug(f"Pet object: {new_pet}")
             # Additional details if available
             if hasattr(e, 'status'):
-                logging.debug(f"HTTP Status: {e.status}")
+                logger.debug(f"HTTP Status: {e.status}")
             if hasattr(e, 'body'):
-                logging.debug(f"Response body: {e.body}")
+                logger.debug(f"Response body: {e.body}")
 
 def main():
     """
