@@ -1,0 +1,21 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run Petstore CLI Add",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/petstore_cli.py",
+            "console": "integratedTerminal",
+            "args": ["add", "Buddy", "--status", "available", "--photo-urls", "https://example.com/photo1.jpg", "https://example.com/photo2.jpg"]
+        },
+        {
+            "name": "Run Petstore CLI List",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/petstore_cli.py",
+            "console": "integratedTerminal",
+            "args": ["list", "--status", "available", "--limit", "10"]
+        }
+    ]
+}
