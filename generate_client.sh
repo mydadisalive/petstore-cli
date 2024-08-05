@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# If this doesn't work use generate_client.bat instead
+
 # Disable path conversion for Docker
 export MSYS_NO_PATHCONV=1
 
